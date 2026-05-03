@@ -1,11 +1,11 @@
-const { Order, User, Product } = require("../models");
+const { Order, User ,OrderItems, Product } = require("../models");
 
 exports.createOrder = async (req, res) => {
   try {
     const { userId, items } = req.body;
 
     if (!userId || !items || items.length === 0) {
-      return res.status(400).json({ error: "Missing required fields." });
+      return res.status(400).json({ error: "Missing items" });
     }
 
     const user = await User.findByPk(userId);
@@ -15,7 +15,8 @@ exports.createOrder = async (req, res) => {
 
     const order = await Order.create({
   userId,
-  totalPrice: 0
+  totalPrice: 0,
+  status: "Pending"
 });
 
     let totalPrice = 0;
@@ -39,7 +40,9 @@ exports.createOrder = async (req, res) => {
 
       // junction table (OrderItems)
       await order.addProduct(product, {
-        through: { quantity: item.quantity }
+        through: { quantity: item.quantity,
+            price: product.price
+         }
       });
     }
 
