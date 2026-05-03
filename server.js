@@ -8,7 +8,7 @@ const app = express();
 app.use("/images", express.static("public/images"));
 const User = require("./models/User");
 require("./models/Product");
-require("./models/Order"); 
+require("./models/Order");
 // Middleware
 app.use(express.json());
 app.use(cors());
@@ -27,17 +27,17 @@ app.get("/create-user", async (req, res) => {
     const user = await User.create({
       name: "Amira",
       email: "amiramanar2003@gmail.com",
-      password: hashedPassword   // ✔ الصحيح
+      password: hashedPassword, // ✔ الصحيح
     });
 
     res.json(user);
-
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 // DB + Server start
-sequelize.authenticate()
+sequelize
+  .authenticate()
   .then(() => {
     console.log("Database connected ✔");
     return sequelize.sync();
