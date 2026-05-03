@@ -18,15 +18,20 @@ app.use("/api/users", userRoutes);
 app.get("/health", (req, res) => {
   res.status(200).json({ message: "DZ-Shop API is running!" });
 });
+const bcrypt = require("bcryptjs");
+
 app.get("/create-user", async (req, res) => {
   try {
+    const hashedPassword = await bcrypt.hash("123456", 10);
+
     const user = await User.create({
       name: "Amira",
       email: "amiramanar2003@gmail.com",
-      password: "123456"
+      password: hashedPassword   // ✔ الصحيح
     });
 
     res.json(user);
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
