@@ -7,6 +7,7 @@ const orderRoutes = require("./routes/orderRoutes");
 const app = express();
 app.use("/images", express.static("public/images"));
 const User = require("./models/User");
+const PORT = process.env.PORT || 3000;
 require("./models/Product");
 require("./models/Order");
 // Middleware
@@ -45,8 +46,8 @@ sequelize
   .then(() => {
     console.log("Tables created ✔");
 
-    app.listen(3000, () => {
-      console.log("Server is running on http://localhost:3000");
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
     });
   })
   .catch((err) => {
